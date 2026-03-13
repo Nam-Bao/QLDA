@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router';
 import { Layout } from './components/Layout';
+import { PrivateRoute } from './components/PrivateRoute';
 import { Dashboard } from './pages/Dashboard';
 import { Projects } from './pages/Projects';
 import { Tasks } from './pages/Tasks';
@@ -36,47 +37,53 @@ export const router = createBrowserRouter([
   { path: '/login', Component: Login },
   { path: '/forgot-password', Component: ForgotPassword },
   {
-    path: '/',
-    Component: Layout,
+    // PrivateRoute guards all app content – redirects to /login if not authenticated
+    Component: PrivateRoute,
     children: [
-      { index: true, Component: Dashboard },
+      {
+        path: '/',
+        Component: Layout,
+        children: [
+          { index: true, Component: Dashboard },
 
-      // Project Management Module
-      { path: 'projects', Component: Projects },
-      { path: 'projects/:id', Component: ProjectDetail },
-      { path: 'projects/:id/tasks', Component: TaskBoard },
-      { path: 'projects/:id/acceptance', Component: Acceptance },
+          // Project Management Module
+          { path: 'projects', Component: Projects },
+          { path: 'projects/:id', Component: ProjectDetail },
+          { path: 'projects/:id/tasks', Component: TaskBoard },
+          { path: 'projects/:id/acceptance', Component: Acceptance },
 
-      // Task Management
-      { path: 'tasks', Component: Tasks },
-      { path: 'tasks/:id', Component: TaskDetail },
+          // Task Management
+          { path: 'tasks', Component: Tasks },
+          { path: 'tasks/:id', Component: TaskDetail },
 
-      // Resource & Team
-      { path: 'resources', Component: ResourceManagement },
+          // Resource & Team
+          { path: 'resources', Component: ResourceManagement },
 
-      // Team, Reports, Documents, Settings
-      { path: 'team', Component: Team },
-      { path: 'reports', Component: Reports },
-      { path: 'documents', Component: Documents },
-      { path: 'settings', Component: Settings },
+          // Team, Reports, Documents, Settings
+          { path: 'team', Component: Team },
+          { path: 'reports', Component: Reports },
+          { path: 'documents', Component: Documents },
+          { path: 'settings', Component: Settings },
 
-      // Common UI
-      { path: 'profile', Component: Profile },
-      { path: 'notifications', Component: Notifications },
+          // Common UI
+          { path: 'profile', Component: Profile },
+          { path: 'notifications', Component: Notifications },
 
-      // Admin Module
-      { path: 'admin/users', Component: UserManagement },
-      { path: 'admin/roles', Component: RoleManagement },
-      { path: 'admin/categories', Component: CategoryManagement },
-      { path: 'admin/logs', Component: SystemLogs },
-      { path: 'admin/backup', Component: BackupRestore },
+          // Admin Module
+          { path: 'admin/users', Component: UserManagement },
+          { path: 'admin/roles', Component: RoleManagement },
+          { path: 'admin/categories', Component: CategoryManagement },
+          { path: 'admin/logs', Component: SystemLogs },
+          { path: 'admin/backup', Component: BackupRestore },
 
-      // Financial Module
-      { path: 'financial', Component: FinancialOverview },
-      { path: 'financial/budget', Component: BudgetManagement },
-      { path: 'financial/invoices', Component: InvoiceManagement },
-      { path: 'financial/approvals', Component: ExpenseApproval },
-      { path: 'financial/risks', Component: RiskAlerts },
+          // Financial Module
+          { path: 'financial', Component: FinancialOverview },
+          { path: 'financial/budget', Component: BudgetManagement },
+          { path: 'financial/invoices', Component: InvoiceManagement },
+          { path: 'financial/approvals', Component: ExpenseApproval },
+          { path: 'financial/risks', Component: RiskAlerts },
+        ],
+      },
     ],
   },
   { path: '*', Component: NotFound },

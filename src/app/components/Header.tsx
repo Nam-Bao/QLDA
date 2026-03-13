@@ -1,8 +1,18 @@
-import { Bell, Search, User } from 'lucide-react';
-import { Link } from 'react-router';
+import { Bell, Search, LogOut } from 'lucide-react';
+import { Link, useNavigate } from 'react-router';
 import { Button } from './Button';
+import { useAuth } from '../context/AuthContext';
+import { ROLE_LABELS } from '../lib/auth';
 
 export function Header() {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
   return (
     <header className="bg-card border-b border-border sticky top-0 z-10 shadow-sm">
       <div className="flex items-center justify-between px-6 py-3">
@@ -27,15 +37,34 @@ export function Header() {
             </Button>
           </Link>
 
-          <Link to="/profile" className="flex items-center gap-3 ml-2 pl-3 border-l border-border hover:opacity-80 transition-opacity">
+          {/* User Info */}
+          <Link
+            to="/profile"
+            className="flex items-center gap-3 ml-2 pl-3 border-l border-border hover:opacity-80 transition-opacity"
+          >
             <div className="text-right">
-              <p className="text-sm">Nguyễn Văn A</p>
-              <p className="text-xs text-muted-foreground">Project Manager</p>
+              <p className="text-sm font-medium">{user?.name ?? 'Người dùng'}</p>
+              <p className="text-xs text-muted-foreground">
+                {user ? ROLE_LABELS[user.role] : ''}
+              </p>
             </div>
             <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-              <User className="w-5 h-5 text-primary-foreground" />
+              <span className="text-xs font-bold text-primary-foreground">
+                {user?.avatar ?? '??'}
+              </span>
             </div>
           </Link>
+
+          {/* Logout Button */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleLogout}
+            title="Đăng xuất"
+            className="text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+          >
+            <LogOut className="w-5 h-5" />
+          </Button>
         </div>
       </div>
     </header>
